@@ -55,6 +55,11 @@ form.reset();
 });
 
 
+//adding function in Prototype to switch status
+Book.prototype.toggleRead = function(){
+  this.isRead = this.isRead == "Yes" ? "No" : "Yes";
+}
+
 
 //Write a function that loops through the array and displays each book on the page.
 function display(){
@@ -78,16 +83,13 @@ libraryContainer.innerHTML = "";
      <p><strong>Pages: </strong> ${books.pagesTotal}</p>
      <p><strong>Read:</strong> ${books.isRead}</p>
      <button class="delete-btn" id="${books.id}">Delete</button>
+     <button class="readStatus" id="${books.id}">Change Read Status</button>
+
      `;
   libraryContainer.appendChild(element);
 }
 
-
-     }
-
-
-
-
+//event lister for delete
 const deleteButtons = document.getElementsByClassName("delete-btn")
 
 //loop through all delete buttons to add a event listener to each button
@@ -100,6 +102,28 @@ for( let i = 0 ; i < deleteButtons.length ; i++){
     deleteBook(bookId);
   });
 }
+
+
+
+//Event listner for Status
+const readStatusToggle = document.getElementsByClassName("readStatus")
+
+//loop through change status buttons to add a event listener to each button
+for( let i = 0 ; i < readStatusToggle.length ; i++){
+
+  readStatusToggle[i].addEventListener("click", function(event){
+    const bookId = event.target.id;
+
+    //call readTOggle function
+    toggleReadStatus(bookId);
+  });
+}
+     }
+
+
+
+
+
 
 function deleteBook(bookId){
 
@@ -116,6 +140,19 @@ function deleteBook(bookId){
 
   display();
 }
+
+
+function toggleReadStatus(bookId){
+for(let i = 0 ; i < myLibrary.length ; i++ ){
+  if(myLibrary[i].id == bookId){
+    myLibrary[i].toggleRead(); // calls prototype function
+    break;
+  }
+}
+
+display(); // re-render
+}
+
 
 
 
